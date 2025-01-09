@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Notification</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            /* Gradient background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Header Style */
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        /* Notification Container */
+        .notification {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            margin: 10px 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .notification.hidden {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        /* Button Style */
+        button {
+            background: #ff9800;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #e68900;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            background: #cc7a00;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Real-Time Notification</h1>
+
+    <div id="notification-container" class="notification hidden">
+        No notifications yet!
+    </div>
+
+    <button onclick="sendTestNotification()">Send Test Notification</button>
+
+    <script src="/socket.io/socket.io.js"></script> <!-- Include the socket.io client -->
+
+    <script>
+        const socket = io('http://localhost:3001');
+        const notificationContainer = document.getElementById('notification-container');
+
+        // Listen for 'notification' event from the server
+        socket.on('notification', (message) => {
+            displayNotification(message);
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from the server');
+        });
+
+        socket.on('error', (error) => {
+            console.error('WebSocket error:', error);
+        });
+
+        // Function to display notifications
+        function displayNotification(message) {
+            notificationContainer.textContent = message;
+            notificationContainer.classList.remove('hidden');
+            setTimeout(() => {
+                notificationContainer.classList.add('hidden');
+            }, 5000); // Hide after 5 seconds
+        }
+
+        // Test button to trigger a notification
+        function sendTestNotification() {
+            displayNotification('This is a test notification!');
+        }
+    </script>
+</body>
+
+</html>

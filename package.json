@@ -1,0 +1,22 @@
+{
+  "name": "real-time-notifier",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "real-time",
+    "notification",
+    "socket.io",
+    "express"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "A real-time notification npm package using Node.js, Express, and Socket.io",
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}
